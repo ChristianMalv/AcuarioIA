@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    String
+  brand       String
+  size        String
+  color       String?
+  featured    Boolean  @default(false)
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  inventory   Inventory[]
+
+  @@map("products")
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  productId String
+  location  String   // 'cdmx' or 'merida'
+  stock     Int      @default(0)
+  minStock  Int      @default(5)
+  maxStock  Int      @default(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, location])
+  @@map("inventory")
+}
+
+model Customer {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String?  // Opcional para usuarios de Google OAuth
+  firstName   String
+  lastName    String
+  phone       String?
+  dateOfBirth DateTime?
+  isActive    Boolean  @default(true)
+  image       String?  // Para avatar de Google
+  googleId    String?  @unique // ID de Google OAuth
+  provider    String   @default("credentials") // 'credentials' o 'google'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  addresses   CustomerAddress[]
+  orders      Order[]
+  accounts    Account[]
+  sessions    Session[]
+
+  @@map("customers")
+}
+
+// Modelos requeridos por NextAuth.js
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model CustomerAddress {
+  id          String   @id @default(cuid())
+  customerId  String
+  type        String   @default("shipping") // 'shipping', 'billing'
+  street      String
+  city        String
+  state       String
+  zipCode     String
+  country     String   @default("México")
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("customer_addresses")
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  customerId  String?     // Opcional para pedidos de invitados
+  customerName String
+  customerEmail String
+  customerPhone String?
+  shippingAddress String
+  total       Float
+  status      String      @default("pending")
+  location    String      @default("merida") // 'cdmx' or 'merida'
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  customer    Customer?   @relation(fields: [customerId], references: [id])
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@map("order_items")
+}
+
+model Promotion {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String
+  description String
+  discount    String
+  validUntil  DateTime
+  image       String
+  ctaText     String
+  ctaLink     String
+  type        String   // discount, bundle, seasonal, flash
+  featured    Boolean  @default(false)
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("promotions")
+}
+
+model CarouselSlide {
+  id          String   @id @default(cuid())
+  image       String
+  alt         String
+  title       String?
+  description String?
+  layersJson   String?
+  textJson     String?
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("carousel_slides")
+}
+
+model AppSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
+}

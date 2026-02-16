@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .font-carousel-display {
+    font-family: var(--font-carousel-display), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .font-carousel-headline {
+    font-family: var(--font-carousel-headline), ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #1f2937;
+    background-color: #ffffff;
+  }
+}
