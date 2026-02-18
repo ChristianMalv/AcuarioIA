@@ -4,10 +4,10 @@ import { prisma } from '@/lib/prisma'
 // GET /api/products/by-location/[location] - Obtener productos con stock por ubicación
 export async function GET(
   request: NextRequest,
-  { params }: { params: { location: string } }
+  { params }: { params: Promise<{ location: string }> }
 ) {
   try {
-    const location = params.location
+    const { location } = await Promise.resolve(params)
     
     // Validar que la ubicación sea válida
     if (location !== 'cdmx' && location !== 'merida') {
