@@ -64,7 +64,7 @@ export default function StructuredData({ type, data, product }: StructuredDataPr
             "@type": "Offer",
             "price": product.price,
             "priceCurrency": "MXN",
-            "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "availability": (product.stock ?? 0) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
             "seller": {
               "@type": "Organization",
               "name": "Pinturas Acuario"
