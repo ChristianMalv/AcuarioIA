@@ -55,9 +55,9 @@ export default function CategoriaPage() {
         case 'price-high':
           return b.price - a.price
         case 'stock-low':
-          return a.stock - b.stock
+          return (a.stock ?? 0) - (b.stock ?? 0)
         case 'stock-high':
-          return b.stock - a.stock
+          return (b.stock ?? 0) - (a.stock ?? 0)
         case 'name':
         default:
           return a.name.localeCompare(b.name)
