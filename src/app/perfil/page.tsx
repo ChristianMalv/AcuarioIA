@@ -377,7 +377,7 @@ export default function ProfilePage() {
                           <div className="flex items-center mt-1">
                             <Star className="w-4 h-4 text-gray-400 mr-2" />
                             <span className="text-gray-900">
-                              {new Date(customer.createdAt || Date.now()).toLocaleDateString('es-MX')}
+                              {new Date(((customer as unknown as { createdAt?: string | Date }).createdAt ?? Date.now())).toLocaleDateString('es-MX')}
                             </span>
                           </div>
                         </div>
