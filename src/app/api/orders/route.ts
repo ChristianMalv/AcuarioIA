@@ -101,16 +101,7 @@ export async function POST(request: NextRequest) {
     const completeOrder = await prisma.order.findUnique({
       where: { id: result.id },
       include: {
-        items: {
-          include: {
-            product: {
-              select: {
-                name: true,
-                image: true
-              }
-            }
-          }
-        }
+        items: true
       }
     })
 
@@ -145,16 +136,7 @@ export async function GET(request: NextRequest) {
     const orders = await prisma.order.findMany({
       where: whereClause,
       include: {
-        items: {
-          include: {
-            product: {
-              select: {
-                name: true,
-                image: true
-              }
-            }
-          }
-        }
+        items: true
       },
       orderBy: {
         createdAt: 'desc'
