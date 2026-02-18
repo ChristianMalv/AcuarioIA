@@ -56,7 +56,8 @@ export default function ProfilePage() {
     city: '',
     state: '',
     zipCode: '',
-    country: 'México'
+    country: 'México',
+    isDefault: false
   })
 
   // Verificar si es una página de bienvenida
@@ -106,7 +107,8 @@ export default function ProfilePage() {
         city: '',
         state: '',
         zipCode: '',
-        country: 'México'
+        country: 'México',
+        isDefault: false
       })
     }
   }
