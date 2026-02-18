@@ -1,4 +1,4 @@
-import { NextAuthOptions } from 'next-auth'
+import { DefaultSession, NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
@@ -76,9 +76,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
-        token.firstName = user.firstName
-        token.lastName = user.lastName
-        token.provider = user.provider
+        token.firstName = user.firstName ?? ''
+        token.lastName = user.lastName ?? ''
+        token.provider = user.provider ?? account?.provider ?? ''
         
         if (account?.provider === 'google') {
           // Crear o actualizar usuario de Google en nuestra base de datos
@@ -125,7 +125,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/login',
-    signUp: '/auth/register',
+    newUser: '/auth/register',
   },
   events: {
     async signIn({ user, account, profile }) {

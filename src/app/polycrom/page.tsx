@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useCart } from '@/contexts/CartContext'
 import { Product } from '@/types'
@@ -162,7 +162,7 @@ function productFromPolycromColorWithPresentation(
   }
 }
 
-export default function PolycromPage() {
+function PolycromPageInner() {
   const searchParams = useSearchParams()
   const { addToCart } = useCart()
   const [query, setQuery] = useState('')
@@ -596,5 +596,13 @@ export default function PolycromPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function PolycromPage() {
+  return (
+    <Suspense>
+      <PolycromPageInner />
+    </Suspense>
   )
 }

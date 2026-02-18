@@ -22,7 +22,6 @@ export async function seedDatabase() {
           brand: product.brand,
           size: product.size,
           color: product.color || null,
-          stock: product.stock,
           featured: product.featured || false,
           image: product.image || null
         }
