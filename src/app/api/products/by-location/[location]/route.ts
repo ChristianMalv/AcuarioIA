@@ -10,9 +10,9 @@ export async function GET(
     const { location } = await Promise.resolve(params)
     
     // Validar que la ubicación sea válida
-    if (location !== 'cdmx' && location !== 'merida') {
+    if (location !== 'cdmx' && location !== 'merida' && location !== 'bodega') {
       return NextResponse.json(
-        { error: 'Ubicación no válida. Use "cdmx" o "merida"' },
+        { error: 'Ubicación no válida. Use "cdmx", "merida" o "bodega"' },
         { status: 400 }
       )
     }

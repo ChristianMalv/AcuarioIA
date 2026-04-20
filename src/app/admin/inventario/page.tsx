@@ -34,7 +34,8 @@ export default function InventarioAdmin() {
   const locations = [
     { id: 'all', name: 'Todas las Ubicaciones' },
     { id: 'cdmx', name: 'Ciudad de México' },
-    { id: 'merida', name: 'Mérida' }
+    { id: 'merida', name: 'Mérida' },
+    { id: 'bodega', name: 'Bodega' }
   ]
 
   const stockFilters = [

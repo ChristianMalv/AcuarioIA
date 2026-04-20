@@ -18,12 +18,14 @@ export async function GET() {
       const totalStock = product.inventory.reduce((sum: number, inv: any) => sum + inv.stock, 0)
       const cdmxInventory = product.inventory.find((inv: any) => inv.location === 'cdmx')
       const meridaInventory = product.inventory.find((inv: any) => inv.location === 'merida')
+      const bodegaInventory = product.inventory.find((inv: any) => inv.location === 'bodega')
       
       return {
         ...product,
         stock: totalStock, // Stock total para compatibilidad con código existente
         stockCdmx: cdmxInventory?.stock || 0,
         stockMerida: meridaInventory?.stock || 0,
+        stockBodega: bodegaInventory?.stock || 0,
         minStock: cdmxInventory?.minStock || 0,
         maxStock: cdmxInventory?.maxStock || 0,
         inventory: undefined // Remover el array de inventory del response para mantener compatibilidad

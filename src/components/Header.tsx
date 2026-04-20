@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ShoppingCart, Menu, X, MapPin, ChevronDown, Phone, Mail } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
@@ -10,8 +10,13 @@ import { HeaderContactButton } from '@/components/SmartContactButton'
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const { getCartItemsCount } = useCart()
   const { currentLocation, openLocationModal } = useLocation()
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   return (
     <header className="bg-white shadow-lg">
@@ -122,7 +127,7 @@ export default function Header() {
             <Link href="/carrito" className="relative p-2 text-gray-700 hover:text-primary-600">
               <ShoppingCart size={24} />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {getCartItemsCount()}
+                <span suppressHydrationWarning>{isMounted ? getCartItemsCount() : 0}</span>
               </span>
             </Link>
 

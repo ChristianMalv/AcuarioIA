@@ -12,7 +12,8 @@ import {
   Settings,
   Warehouse,
   FileText,
-  Images
+  Images,
+  Upload
 } from 'lucide-react'
 
 interface NavItem {
@@ -48,10 +49,22 @@ const navigation: NavItem[] = [
     description: 'Agregar producto'
   },
   {
+    name: 'Imágenes Productos',
+    href: '/admin/imagenes-productos',
+    icon: Images,
+    description: 'Cargar por SKU'
+  },
+  {
     name: 'Inventario',
     href: '/admin/inventario',
     icon: Warehouse,
     description: 'Control de stock'
+  },
+  {
+    name: 'Cargar Inventario',
+    href: '/admin/cargar-inventario',
+    icon: Upload,
+    description: 'Importar Excel'
   },
   {
     name: 'Pedidos',

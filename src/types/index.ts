@@ -1,9 +1,13 @@
 export interface Product {
   id: string
+  sku?: string
+  model?: string
+  supplier?: string
   name: string
   description: string
   price: number
   image: string
+  images?: ProductImage[]
   category: 'vinilica' | 'aerosol' | 'impermeabilizante' | 'accesorio'
   brand: string
   size: string
@@ -15,8 +19,18 @@ export interface Product {
   stock?: number
   stockCdmx?: number
   stockMerida?: number
+  stockBodega?: number
   minStock?: number
   maxStock?: number
+}
+
+export interface ProductImage {
+  id: string
+  productId: string
+  url: string
+  alt?: string
+  isPrimary: boolean
+  createdAt?: Date
 }
 
 export interface Inventory {
