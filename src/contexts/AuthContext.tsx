@@ -134,10 +134,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     
     try {
-      // Debug: Log de las credenciales recibidas
-      console.log('Login attempt:', { username, password })
-      console.log('Available credentials:', DEFAULT_CREDENTIALS)
-      
       // Simular delay de autenticación
       await new Promise(resolve => setTimeout(resolve, 1000))
       
@@ -149,20 +145,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         cred => {
           const credUsername = cred.username.trim().toLowerCase()
           const credPassword = cred.password.trim()
-          
-          console.log('Comparing:', { 
-            inputUser: trimmedUsername, 
-            credUser: credUsername, 
-            inputPass: trimmedPassword, 
-            credPass: credPassword,
-            userMatch: credUsername === trimmedUsername,
-            passMatch: credPassword === trimmedPassword
-          })
           return credUsername === trimmedUsername && credPassword === trimmedPassword
         }
       )
-      
-      console.log('Found credential:', credential)
       
       if (credential) {
         // Crear token con expiración de 8 horas

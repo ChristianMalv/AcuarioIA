@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import Image from 'next/image'
 import { Eye, EyeOff, Lock, User, AlertCircle, Loader2 } from 'lucide-react'
 
 export default function AdminLoginPage() {
@@ -58,8 +59,15 @@ export default function AdminLoginPage() {
       <div className="max-w-md w-full">
         {/* Logo y título */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-3xl">A</span>
+          <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-200">
+            <Image
+              src="/logo.png"
+              alt="Pinturas Acuario"
+              width={64}
+              height={64}
+              className="w-16 h-16 object-contain"
+              priority
+            />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Pinturas Acuario
@@ -158,21 +166,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-          {/* Información de credenciales de prueba */}
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-900 mb-2">
-              Credenciales de prueba:
-            </h3>
-            <div className="text-xs text-gray-600 space-y-1">
-              <div>
-                <strong>Administrador:</strong> admin / pinturas2024!
-              </div>
-              <div>
-                <strong>Gerente:</strong> manager / manager2024!
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
