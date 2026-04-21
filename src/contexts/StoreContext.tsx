@@ -4,8 +4,11 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 export interface PhysicalStore {
   id: string
+  city: 'cdmx' | 'merida'
   name: string
   address: string
+  googleMapsUrl?: string
+  googleMapsEmbedSrc?: string
   coordinates: {
     lat: number
     lng: number
@@ -39,6 +42,7 @@ interface StoreContextType {
 const cdmxStores: PhysicalStore[] = [
   {
     id: 'cdmx-centro',
+    city: 'cdmx',
     name: 'Pinturas Acuario CDMX',
     address: 'Av. Insurgentes Sur No. 1234, Col. Del Valle, Benito Juárez, CDMX',
     coordinates: { lat: 19.3910, lng: -99.1620 },
@@ -61,26 +65,30 @@ const cdmxStores: PhysicalStore[] = [
 const meridaStores: PhysicalStore[] = [
   {
     id: 'Dorada',
+    city: 'merida',
     name: 'Pinturas Acuario Dorada',
     address: 'C. 50 130-Interior 4, Miguel Hidalgo, 97220 Mérida, Yuc.',
-    coordinates: { lat: 20.978611, lng: -89.633889 },
+    googleMapsUrl: 'https://maps.app.goo.gl/bmcq8Wiz2bCQjBY27',
+    coordinates: { lat: 20.9808, lng: -89.6235 },
     phone: '+52 999 495 0415',
     whatsapp: '5219994950415',
-    telegram: 'pinturasacuario_dorada',
     email: 'dorada@pinturasacuario.com',
     hours: {
       weekdays: '8:30 AM - 6:30 PM',
       saturday: '9:00 AM - 3:00 PM',
       sunday: 'Cerrado'
     },
-    manager: 'Carlos Mendoza',
+    manager: 'Luis García',
     services: ['Venta', 'Asesoría técnica', 'Mezcla de colores', 'Entrega a domicilio'],
-    zone: 'centro'
+    zone: 'norte'
   },
   {
     id: 'Canek',
+    city: 'merida',
     name: 'Pinturas Acuario Canek',
     address: 'Av Jacinto Canek 252-A, Yucalpetén, 97238 Mérida, Yuc.',
+    googleMapsUrl: 'https://maps.app.goo.gl/RUKuCmMugmc4FzWDA',
+    googleMapsEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.1416827397497!2d-89.66226492474456!3d20.986956980651932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5673475d478cd7%3A0x30d23a36cb7a4df9!2sPinturas%20Acuario%20Canek!5e0!3m2!1ses-419!2smx!4v1776798734749!5m2!1ses-419!2smx',
     coordinates: { lat: 20.9673, lng: -89.5925 },
     phone: '+52 999 995 1776',
     whatsapp: '5219999951776',
@@ -97,8 +105,10 @@ const meridaStores: PhysicalStore[] = [
   },
   {
     id: 'Caucel',
+    city: 'merida',
     name: 'Pinturas Acuario Caucel',
     address: 'Calle 114 37a-y 29c, Local 4, 97314 Mérida, Yuc.',
+    googleMapsUrl: 'https://maps.app.goo.gl/d7Fhq7NMfQxBvhvW8',
     coordinates: { lat: 20.985959, lng: -89.655823 },
     phone: '+52 999 334 0058',
     whatsapp: '5219993340058',
@@ -115,11 +125,13 @@ const meridaStores: PhysicalStore[] = [
   },
   {
     id: 'Circuito Sur',
+    city: 'merida',
     name: 'Pinturas Acuario Circuito Sur',
     address: 'Calle 396, Cto. Colonias Col, Dolores Otero, 97270 Mérida, Yuc.',
+    googleMapsUrl: 'https://maps.app.goo.gl/rxFbpXQiDsPhbqMM9',
     coordinates: { lat: 20.9678, lng: -89.6217 },
-    phone: '+52 999 995 1776',
-    whatsapp: '5219999951776',
+    phone: '+52 1 999 122 1942',
+    whatsapp: '5219991221942',
     telegram: 'pinturasacuario_circuitosur',
     email: 'circuitosur@pinturasacuario.com',
     hours: {
@@ -156,6 +168,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setIsDetectingLocation(true)
     
     try {
+      const candidateStores = stores.filter(store => store.city === 'merida')
       if ('geolocation' in navigator) {
         const position = await new Promise<GeolocationPosition>((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -167,7 +180,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const { latitude, longitude } = position.coords
         
         // Calcular distancia a cada tienda
-        const storesWithDistance = stores.map(store => ({
+        const storesWithDistance = candidateStores.map(store => ({
           ...store,
           distance: calculateDistance(latitude, longitude, store.coordinates.lat, store.coordinates.lng)
         }))
@@ -183,13 +196,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('pinturas-acuario-nearest-store', nearest.id)
         
       } else {
-        // Si no hay geolocalización, usar tienda de CDMX por defecto
-        setNearestStore(stores.find(store => store.id === 'cdmx-centro') || stores[0])
+        // Si no hay geolocalización, usar Mérida por defecto
+        setNearestStore(candidateStores[0] || stores[0])
       }
     } catch (error) {
       console.error('Error detecting location:', error)
-      // En caso de error, usar tienda de CDMX por defecto
-      setNearestStore(stores.find(store => store.id === 'cdmx-centro') || stores[0])
+      // En caso de error, usar Mérida por defecto
+      const candidateStores = stores.filter(store => store.city === 'merida')
+      setNearestStore(candidateStores[0] || stores[0])
     } finally {
       setIsDetectingLocation(false)
     }
@@ -200,11 +214,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   const getStoresByCity = (city: 'cdmx' | 'merida'): PhysicalStore[] => {
-    if (city === 'cdmx') {
-      return stores.filter(store => store.id.startsWith('cdmx-'))
-    } else {
-      return stores.filter(store => store.id.startsWith('merida-'))
-    }
+    return stores.filter(store => store.city === city)
   }
 
   const getWhatsAppLink = (storeId: string, message?: string): string => {

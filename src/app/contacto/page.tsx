@@ -13,6 +13,7 @@ export default function ContactoPage() {
   const { stores, nearestStore, findNearestStore, getWhatsAppLink, getStoresByCity } = useStores()
   const { currentLocation } = useLocation()
   const [showStoreSelector, setShowStoreSelector] = useState(false)
+  const [mapStoreId, setMapStoreId] = useState<string | null>(null)
 
   // Filtrar tiendas según la ubicación actual
   const relevantStores = getStoresByCity(currentLocation.city === 'merida' ? 'merida' : 'cdmx')
@@ -49,8 +50,10 @@ export default function ContactoPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Teléfono Principal</h3>
-                  <p className="text-gray-600">+52 (55) 1234-5678</p>
-                  <p className="text-sm text-gray-500">Lunes a Viernes: 8:00 AM - 7:00 PM</p>
+                  <a href="tel:+529999951776" className="text-gray-600 hover:underline">
+                    +52 999 995 1776
+                  </a>
+                  <p className="text-sm text-gray-500">Canek • L-V: 8:30 AM - 6:30 PM</p>
                 </div>
               </div>
 
@@ -60,7 +63,9 @@ export default function ContactoPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                  <p className="text-gray-600">ventas@pinturasacuario.com</p>
+                  <a href="mailto:operaciones@nup.com.mx" className="text-gray-600 hover:underline">
+                    operaciones@nup.com.mx
+                  </a>
                   <p className="text-sm text-gray-500">Respuesta en menos de 24 horas</p>
                 </div>
               </div>
@@ -71,7 +76,7 @@ export default function ContactoPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Cobertura</h3>
-                  <p className="text-gray-600">Ciudad de México y Mérida, Yucatán</p>
+                  <p className="text-gray-600">Mérida, Yucatán</p>
                   <p className="text-sm text-gray-500">Entregas a domicilio disponibles</p>
                 </div>
               </div>
@@ -208,12 +213,34 @@ export default function ContactoPage() {
                     <div className="space-y-3 text-sm text-gray-600 mb-4">
                       <div className="flex items-start space-x-2">
                         <MapPin size={14} className="text-primary-600 mt-0.5 flex-shrink-0" />
-                        <span>{store.address}</span>
+                        <a
+                          href={store.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${store.coordinates.lat},${store.coordinates.lng}`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:underline"
+                        >
+                          {store.address}
+                        </a>
                       </div>
+
+                      {store.googleMapsEmbedSrc && (
+                        <button
+                          type="button"
+                          onClick={() => setMapStoreId(store.id)}
+                          className="text-xs text-primary-600 hover:text-primary-700 underline text-left"
+                        >
+                          Ver mapa
+                        </button>
+                      )}
                       
                       <div className="flex items-center space-x-2">
                         <Phone size={14} className="text-primary-600" />
-                        <span>{store.phone}</span>
+                        <a
+                          href={`tel:${store.phone.replace(/\s/g, '')}`}
+                          className="hover:underline"
+                        >
+                          {store.phone}
+                        </a>
                       </div>
                       
                       <div className="flex items-start space-x-2">
@@ -227,7 +254,6 @@ export default function ContactoPage() {
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-xs text-gray-500 mb-2">Gerente: {store.manager}</p>
                       <div className="flex flex-wrap gap-1">
                         {store.services.slice(0, 2).map((service, index) => (
                           <span
@@ -314,6 +340,38 @@ export default function ContactoPage() {
         isOpen={showStoreSelector}
         onClose={() => setShowStoreSelector(false)}
       />
+
+      {(() => {
+        const selected = relevantStores.find((s) => s.id === mapStoreId)
+        if (!selected?.googleMapsEmbedSrc) return null
+        return (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div className="font-semibold text-gray-900">{selected.name}</div>
+                <button
+                  type="button"
+                  onClick={() => setMapStoreId(null)}
+                  className="text-gray-500 hover:text-gray-900"
+                >
+                  Cerrar
+                </button>
+              </div>
+              <div className="w-full aspect-[4/3]">
+                <iframe
+                  src={selected.googleMapsEmbedSrc}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       <Footer />
     </div>

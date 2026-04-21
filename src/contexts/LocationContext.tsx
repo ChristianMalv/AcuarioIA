@@ -55,7 +55,7 @@ const locations: Record<City, LocationData> = {
 const LocationContext = createContext<LocationContextType | undefined>(undefined)
 
 export function LocationProvider({ children }: { children: ReactNode }) {
-  const [currentLocation, setCurrentLocation] = useState<LocationData>(locations.cdmx)
+  const [currentLocation, setCurrentLocation] = useState<LocationData>(locations.merida)
   const [isDetecting, setIsDetecting] = useState(false)
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
   const [isClient, setIsClient] = useState(false)
@@ -72,9 +72,6 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     const savedLocation = localStorage.getItem('pinturas-acuario-location')
     if (savedLocation && (savedLocation === 'cdmx' || savedLocation === 'merida')) {
       setCurrentLocation(locations[savedLocation as City])
-    } else {
-      // Si no hay ubicación guardada, mostrar modal de selección
-      setIsLocationModalOpen(true)
     }
   }, [isClient])
 
@@ -111,7 +108,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         )
 
         const nearestCity = distanceToCDMX < distanceToMerida ? 'cdmx' : 'merida'
-        setLocation(nearestCity)
+        setLocation(nearestCity === 'cdmx' ? 'merida' : nearestCity)
         
       } else {
         // Fallback: detectar por IP usando un servicio gratuito
@@ -125,11 +122,11 @@ export function LocationProvider({ children }: { children: ReactNode }) {
           if (region.includes('yucatan') || region.includes('yucatán')) {
             setLocation('merida')
           } else {
-            setLocation('cdmx') // Por defecto CDMX para México
+            setLocation('merida')
           }
         } else {
           // Si no está en México, por defecto CDMX
-          setLocation('cdmx')
+          setLocation('merida')
         }
       }
     } catch (error) {

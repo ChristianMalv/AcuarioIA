@@ -3,6 +3,22 @@
 import { useState, useEffect } from 'react'
 import VerticalPromotionsCarousel from './VerticalPromotionsCarousel'
 
+interface Promotion {
+  id: string
+  title: string
+  subtitle: string
+  description: string
+  discount: string
+  validUntil: string
+  image: string
+  ctaText: string
+  ctaLink: string
+  type: 'discount' | 'bundle' | 'seasonal' | 'flash'
+  featured?: boolean
+  active?: boolean
+  order?: number
+}
+
 // Sample promotions data - this will be replaced with API data
 const samplePromotions = [
   {
@@ -51,7 +67,7 @@ const samplePromotions = [
 ]
 
 export default function PromotionsWithCarousel() {
-  const [promotions, setPromotions] = useState(samplePromotions)
+  const [promotions, setPromotions] = useState<Promotion[]>(samplePromotions)
   const [loading, setLoading] = useState(false)
 
   // Future: Fetch promotions from API
@@ -59,14 +75,33 @@ export default function PromotionsWithCarousel() {
     const fetchPromotions = async () => {
       try {
         setLoading(true)
-        // TODO: Replace with actual API call when database is ready
-        // const response = await fetch('/api/promotions?active=true')
-        // if (response.ok) {
-        //   const data = await response.json()
-        //   setPromotions(data)
-        // }
-        
-        // For now, use sample data
+        const response = await fetch('/api/promotions?active=true')
+        if (response.ok) {
+          const data = await response.json().catch(() => [])
+          if (Array.isArray(data)) {
+            const normalized: Promotion[] = data
+              .filter((p: any) => p && typeof p === 'object')
+              .map((p: any) => ({
+                id: String(p.id),
+                title: String(p.title ?? ''),
+                subtitle: String(p.subtitle ?? ''),
+                description: String(p.description ?? ''),
+                discount: String(p.discount ?? ''),
+                validUntil: p.validUntil ? new Date(p.validUntil).toLocaleDateString('es-MX') : '',
+                image: String(p.image ?? ''),
+                ctaText: String(p.ctaText ?? ''),
+                ctaLink: String(p.ctaLink ?? ''),
+                type: (p.type === 'discount' || p.type === 'bundle' || p.type === 'seasonal' || p.type === 'flash') ? p.type : 'discount',
+                featured: Boolean(p.featured),
+                active: Boolean(p.active),
+                order: typeof p.order === 'number' ? p.order : 0
+              }))
+
+            setPromotions(normalized)
+            return
+          }
+        }
+
         setPromotions(samplePromotions)
       } catch (error) {
         console.error('Error fetching promotions:', error)

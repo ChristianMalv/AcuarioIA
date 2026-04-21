@@ -25,6 +25,25 @@ export const metadata: Metadata = {
     template: "%s | Pinturas Acuario"
   },
   description: "Tienda especializada en pinturas vinílicas, aerosoles e impermeabilizantes de la marca Acuario. Entrega en CDMX y Mérida. Calidad profesional para todos tus proyectos.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico?v=1', type: 'image/x-icon' },
+      { url: '/favicon-16.svg?v=1', type: 'image/svg+xml', sizes: '16x16' },
+      { url: '/favicon-32.svg?v=1', type: 'image/svg+xml', sizes: '32x32' },
+      { url: '/favicon.svg?v=1', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/icon.png?v=2', type: 'image/png' }
+    ],
+    shortcut: [
+      { url: '/favicon.ico?v=1', type: 'image/x-icon' },
+      { url: '/favicon-16.svg?v=1', type: 'image/svg+xml', sizes: '16x16' },
+      { url: '/favicon-32.svg?v=1', type: 'image/svg+xml', sizes: '32x32' },
+      { url: '/favicon.svg?v=1', type: 'image/svg+xml' },
+      { url: '/icon.png?v=2', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/icon.png?v=2', type: 'image/png' }
+    ]
+  },
   keywords: [
     "pinturas", "vinílicas", "aerosol", "impermeabilizantes", "acuario", 
     "construcción", "decoración", "CDMX", "Mérida", "México", "pintura profesional",

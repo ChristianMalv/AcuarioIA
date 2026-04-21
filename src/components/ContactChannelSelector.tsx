@@ -99,7 +99,7 @@ export default function ContactChannelSelector({
         const store = stores.find(s => s.id === storeId)
         const subject = productName ? `Consulta sobre ${productName}` : 'Consulta sobre productos'
         const body = `${getContactMessage()}\n\nTienda de contacto: ${store?.name || 'No especificada'}`
-        const emailUrl = `mailto:ventas@pinturasacuario.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+        const emailUrl = `mailto:operaciones@nup.com.mx?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
         window.open(emailUrl, '_self')
       }
     }

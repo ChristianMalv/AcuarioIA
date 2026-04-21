@@ -26,6 +26,8 @@ export default function StoreSelector({
     findNearestStore, 
     getWhatsAppLink 
   } = useStores()
+
+  const visibleStores = stores.filter(store => store.city === 'merida')
   
   const [selectedStore, setSelectedStore] = useState<string | null>(null)
 
@@ -99,7 +101,7 @@ export default function StoreSelector({
 
           {/* Lista de tiendas */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {stores.map((store) => {
+            {visibleStores.map((store) => {
               const isNearest = nearestStore?.id === store.id
               const isSelected = selectedStore === store.id
               
@@ -128,12 +130,26 @@ export default function StoreSelector({
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-start space-x-2">
                       <MapPin size={16} className="text-primary-600 mt-0.5 flex-shrink-0" />
-                      <span>{store.address}</span>
+                      <a
+                        href={store.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${store.coordinates.lat},${store.coordinates.lng}`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {store.address}
+                      </a>
                     </div>
                     
                     <div className="flex items-center space-x-2">
                       <Phone size={16} className="text-primary-600" />
-                      <span>{store.phone}</span>
+                      <a
+                        href={`tel:${store.phone.replace(/\s/g, '')}`}
+                        className="hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {store.phone}
+                      </a>
                     </div>
                     
                     <div className="flex items-start space-x-2">
@@ -147,7 +163,6 @@ export default function StoreSelector({
                   </div>
 
                   <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-xs text-gray-500 mb-2">Gerente: {store.manager}</p>
                     <div className="flex flex-wrap gap-1">
                       {store.services.slice(0, 2).map((service, index) => (
                         <span

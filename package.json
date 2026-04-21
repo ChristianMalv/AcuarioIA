@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:favicon": "node scripts/generate-favicon.mjs"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -27,6 +28,7 @@
     "sqlite3": "^5.1.7",
     "stripe": "^17.3.1",
     "tailwind-merge": "^2.5.4",
+    "to-ico": "^1.1.5",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.18",
     "postcss": "^8",
+    "sharp": "^0.33.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

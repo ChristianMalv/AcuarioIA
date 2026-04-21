@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 const DEFAULTS: Record<string, string> = {
-  carouselImageFit: 'contain'
+  carouselImageFit: 'contain',
+  bestSellingProductIds: '[]',
+  bestSellingConfig: '[]'
 }
 
 // GET /api/settings - Get settings (optionally filter by keys)

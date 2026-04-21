@@ -70,23 +70,6 @@ export default function LocationModal() {
           {/* Selección manual */}
           <div className="space-y-3">
             <button
-              onClick={() => setLocation('cdmx')}
-              className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-600 hover:bg-primary-50 transition-all text-left group"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-gray-900 group-hover:text-primary-600">
-                    Ciudad de México
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Entrega en las 16 alcaldías • Envío desde $150
-                  </p>
-                </div>
-                <div className="text-2xl">🏙️</div>
-              </div>
-            </button>
-
-            <button
               onClick={() => setLocation('merida')}
               className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-primary-600 hover:bg-primary-50 transition-all text-left group"
             >

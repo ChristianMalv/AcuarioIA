@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ShoppingCart, Menu, X, MapPin, ChevronDown, Phone, Mail } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { useLocation } from '@/contexts/LocationContext'
@@ -26,11 +27,21 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Phone size={16} />
-              <span>+52 (55) 1234-5678</span>
+              <a
+                href="tel:+529999951776"
+                className="hover:underline"
+              >
+                +52 999 995 1776
+              </a>
             </div>
             <div className="flex items-center space-x-1">
               <Mail size={16} />
-              <span>ventas@pinturasacuario.com</span>
+              <a
+                href="mailto:operaciones@nup.com.mx"
+                className="hover:underline"
+              >
+                operaciones@nup.com.mx
+              </a>
             </div>
           </div>
           <div className="hidden md:block">
@@ -44,9 +55,14 @@ export default function Header() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">A</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Pinturas Acuario"
+              width={48}
+              height={48}
+              className="w-12 h-12 object-contain"
+              priority
+            />
             <div>
               <h1 className="text-2xl font-bold text-primary-600">Pinturas Acuario</h1>
               <p className="text-sm text-gray-600">Calidad que perdura</p>
@@ -83,7 +99,7 @@ export default function Header() {
                       <MapPin size={20} className="text-primary-600" />
                       <div>
                         <div className="font-medium text-gray-900">Seleccionar ciudad</div>
-                        <div className="text-sm text-gray-600">CDMX o Mérida</div>
+                        <div className="text-sm text-gray-600">Mérida</div>
                       </div>
                     </div>
                   </button>

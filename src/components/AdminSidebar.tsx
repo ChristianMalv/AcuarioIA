@@ -13,7 +13,8 @@ import {
   Warehouse,
   FileText,
   Images,
-  Upload
+  Upload,
+  Tag
 } from 'lucide-react'
 
 interface NavItem {
@@ -71,6 +72,12 @@ const navigation: NavItem[] = [
     href: '/admin/pedidos',
     icon: ShoppingCart,
     description: 'Gestionar órdenes'
+  },
+  {
+    name: 'Promociones',
+    href: '/admin/promociones',
+    icon: Tag,
+    description: 'Promociones del home'
   },
   {
     name: 'Reportes',

@@ -147,7 +147,7 @@ export default function OrdenExitosaPage() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-primary-600" />
-                <span className="text-primary-800">ventas@pinturasacuario.com</span>
+                <span className="text-primary-800">operaciones@nup.com.mx</span>
               </div>
             </div>
           </div>

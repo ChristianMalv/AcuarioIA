@@ -2,6 +2,16 @@
 
 import Link from 'next/link'
 import { Star, ShoppingCart, Eye } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import type { Product } from '@/types'
+
+type BestSellingBadge = 'Más Vendido' | 'Oferta' | 'Premium' | 'Nuevo'
+
+interface BestSellingConfigItem {
+  id: string
+  badge?: BestSellingBadge
+  isNew?: boolean
+}
 
 interface BestSellingProduct {
   id: string
@@ -16,51 +26,118 @@ interface BestSellingProduct {
   isNew?: boolean
 }
 
-const bestSellingProducts: BestSellingProduct[] = [
-  {
-    id: '1',
-    name: 'Pintura Vinílica Blanco Hueso 4L',
-    price: 285.50,
-    originalPrice: 320.00,
-    image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=400&fit=crop&crop=center&q=85',
-    rating: 4.8,
-    reviewCount: 127,
-    category: 'Vinílica',
-    badge: 'Más Vendido'
-  },
-  {
-    id: '2',
-    name: 'Aerosol Rojo Ferrari 400ml',
-    price: 89.90,
-    image: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=400&fit=crop&crop=center&q=85',
-    rating: 4.6,
-    reviewCount: 89,
-    category: 'Aerosol',
-    badge: 'Oferta'
-  },
-  {
-    id: '3',
-    name: 'Impermeabilizante Acrílico 19L',
-    price: 450.00,
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=400&fit=crop&crop=center&q=85',
-    rating: 4.9,
-    reviewCount: 156,
-    category: 'Impermeabilizante',
-    badge: 'Premium'
-  },
-  {
-    id: '4',
-    name: 'Brocha Profesional 4"',
-    price: 125.00,
-    image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=400&fit=crop&crop=center&q=85',
-    rating: 4.7,
-    reviewCount: 203,
-    category: 'Herramienta',
-    isNew: true
-  }
-]
+function categoryLabel(category: Product['category']): string {
+  if (category === 'vinilica') return 'Vinílica'
+  if (category === 'aerosol') return 'Aerosol'
+  if (category === 'impermeabilizante') return 'Impermeabilizante'
+  return 'Accesorio'
+}
 
 export default function BestSellingProducts() {
+  const [loading, setLoading] = useState(true)
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [config, setConfig] = useState<BestSellingConfigItem[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const [settingsRes, productsRes] = await Promise.all([
+          fetch('/api/settings?keys=bestSellingProductIds,bestSellingConfig'),
+          fetch('/api/products')
+        ])
+
+        if (settingsRes.ok) {
+          const data = await settingsRes.json().catch(() => null)
+          const raw = data?.bestSellingProductIds
+          if (typeof raw === 'string' && raw.trim().length > 0) {
+            try {
+              const parsed = JSON.parse(raw)
+              if (Array.isArray(parsed) && parsed.every((x) => typeof x === 'string')) {
+                setSelectedIds(parsed)
+              }
+            } catch {
+              // ignore
+            }
+          }
+
+          const rawConfig = data?.bestSellingConfig
+          if (typeof rawConfig === 'string' && rawConfig.trim().length > 0) {
+            try {
+              const parsed = JSON.parse(rawConfig)
+              if (
+                Array.isArray(parsed) &&
+                parsed.every((x) => x && typeof x === 'object' && typeof x.id === 'string')
+              ) {
+                setConfig(
+                  (parsed as any[]).map((x) => ({
+                    id: String(x.id),
+                    badge:
+                      x.badge === 'Más Vendido' ||
+                      x.badge === 'Oferta' ||
+                      x.badge === 'Premium' ||
+                      x.badge === 'Nuevo'
+                        ? x.badge
+                        : undefined,
+                    isNew: typeof x.isNew === 'boolean' ? x.isNew : undefined
+                  }))
+                )
+              }
+            } catch {
+              // ignore
+            }
+          }
+        }
+
+        if (productsRes.ok) {
+          const data = await productsRes.json().catch(() => [])
+          if (Array.isArray(data)) setProducts(data as Product[])
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const bestSellingProducts: BestSellingProduct[] = useMemo(() => {
+    const map = new Map(products.map((p) => [p.id, p]))
+    const cfgById = new Map(config.map((c) => [c.id, c]))
+    const selected = selectedIds
+      .map((id) => map.get(id))
+      .filter(Boolean) as Product[]
+
+    return selected.map((p) => ({
+      ...(() => {
+        const cfg = cfgById.get(p.id)
+        const cfgBadge = cfg?.badge
+
+        if (cfgBadge === 'Nuevo') {
+          return {
+            badge: undefined,
+            isNew: true
+          }
+        }
+
+        return {
+          badge: cfgBadge ?? 'Más Vendido',
+          isNew: cfg?.isNew ?? false
+        }
+      })(),
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image || (p.images?.find((i) => i.isPrimary)?.url ?? p.images?.[0]?.url ?? ''),
+      rating: 5,
+      reviewCount: 0,
+      category: categoryLabel(p.category)
+    }))
+  }, [products, selectedIds, config])
+
+  if (!loading && bestSellingProducts.length === 0) return null
+
   return (
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
@@ -83,11 +160,15 @@ export default function BestSellingProducts() {
             >
               {/* Product Image */}
               <div className="relative overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-48 bg-gray-100" />
+                )}
                 
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-col gap-2">

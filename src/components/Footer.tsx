@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react'
 
 export default function Footer() {
@@ -9,9 +10,13 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">A</span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Pinturas Acuario"
+                width={40}
+                height={40}
+                className="w-10 h-10 object-contain"
+              />
               <div>
                 <h3 className="text-xl font-bold">Pinturas Acuario</h3>
                 <p className="text-sm text-gray-400">Calidad que perdura</p>
@@ -105,26 +110,35 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin size={18} className="text-primary-400 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300">
-                    Av. Principal 123<br />
-                    Col. Centro<br />
-                    Ciudad de México, CDMX 06000
-                  </p>
+                  <a
+                    href="https://maps.app.goo.gl/RUKuCmMugmc4FzWDA"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    Av Jacinto Canek 252-A<br />
+                    Yucalpetén<br />
+                    97238 Mérida, Yuc.
+                  </a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Phone size={18} className="text-primary-400 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300">+52 (55) 1234-5678</p>
-                  <p className="text-sm text-gray-400">Lun - Vie: 9:00 - 18:00</p>
+                  <a href="tel:+529999951776" className="text-gray-300 hover:text-white transition-colors">
+                    +52 999 995 1776
+                  </a>
+                  <p className="text-sm text-gray-400">Lun - Vie: 8:30 - 18:30</p>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Mail size={18} className="text-primary-400 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300">ventas@pinturasacuario.com</p>
+                  <a href="mailto:operaciones@nup.com.mx" className="text-gray-300 hover:text-white transition-colors">
+                    operaciones@nup.com.mx
+                  </a>
                   <p className="text-sm text-gray-400">Respuesta en 24 hrs</p>
                 </div>
               </div>
