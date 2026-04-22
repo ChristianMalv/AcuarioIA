@@ -28,6 +28,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (String(location || '').toLowerCase() !== 'merida') {
+      return NextResponse.json(
+        { error: 'Por el momento solo entregamos en Mérida, Yucatán' },
+        { status: 400 }
+      )
+    }
+
     // Verificar stock disponible antes de crear el pedido
     for (const item of items) {
       const inventory = await prisma.inventory.findFirst({

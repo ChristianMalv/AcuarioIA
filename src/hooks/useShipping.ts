@@ -48,13 +48,15 @@ export function useShipping(postalCode: string, orderTotal: number): ShippingInf
     }
 
     const shipping = getShippingCostByPostalCode(postalCode, orderTotal)
-    
+
+    const isDeliverable = Boolean(shipping.zone)
+
     setShippingInfo({
       cost: shipping.cost,
       zone: shipping.zone,
       isFree: shipping.isFree,
       reason: shipping.reason,
-      isValid: true,
+      isValid: isDeliverable,
       estimatedDays: shipping.zone?.estimatedDays || ''
     })
   }, [postalCode, orderTotal])

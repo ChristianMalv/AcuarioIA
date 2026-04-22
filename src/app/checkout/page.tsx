@@ -23,8 +23,8 @@ export default function CheckoutPage() {
     email: '',
     phone: '',
     address: '',
-    city: '',
-    state: '',
+    city: 'Mérida',
+    state: 'YUC',
     zipCode: ''
   })
   const [paymentMethod, setPaymentMethod] = useState('card')
@@ -53,7 +53,7 @@ export default function CheckoutPage() {
         total: cart.total + shippingInfo.cost, // Incluir costo de envío
         shippingCost: shippingInfo.cost,
         shippingZone: shippingInfo.zone?.id,
-        location: currentLocation || 'merida',
+        location: currentLocation?.city || 'merida',
         customerId: customer?.id || null
       }
 
@@ -219,8 +219,9 @@ export default function CheckoutPage() {
                       required
                       value={customerInfo.city}
                       onChange={handleInputChange}
+                      disabled
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Ciudad de México"
+                      placeholder="Mérida"
                     />
                   </div>
 
@@ -233,21 +234,10 @@ export default function CheckoutPage() {
                       required
                       value={customerInfo.state}
                       onChange={handleInputChange}
+                      disabled
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
-                      <option value="">Seleccionar</option>
-                      <option value="CDMX">Ciudad de México</option>
-                      <option value="MEX">Estado de México</option>
-                      <option value="JAL">Jalisco</option>
-                      <option value="NL">Nuevo León</option>
-                      <option value="PUE">Puebla</option>
                       <option value="YUC">Yucatán</option>
-                      <option value="QRO">Querétaro</option>
-                      <option value="GTO">Guanajuato</option>
-                      <option value="VER">Veracruz</option>
-                      <option value="TAB">Tabasco</option>
-                      <option value="CAM">Campeche</option>
-                      <option value="QROO">Quintana Roo</option>
                     </select>
                   </div>
 
@@ -405,7 +395,7 @@ export default function CheckoutPage() {
               {/* Submit Button */}
               <button
                 onClick={handleSubmit}
-                disabled={isProcessing}
+                disabled={isProcessing || !shippingInfo.isValid}
                 className="w-full bg-primary-600 text-white py-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
               >
                 <Lock size={20} />
