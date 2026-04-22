@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -27,14 +27,21 @@ export default function Footer() {
               Más de 20 años brindando calidad profesional para todos tus proyectos.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors">
+              <a
+                href="https://www.facebook.com/pinturasacuario.dorada"
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"
+              >
                 <Facebook size={16} />
               </a>
-              <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors">
+              <a
+                href="https://www.instagram.com/nup_pinturas_acuario/"
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"
+              >
                 <Instagram size={16} />
-              </a>
-              <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors">
-                <Twitter size={16} />
               </a>
             </div>
           </div>
