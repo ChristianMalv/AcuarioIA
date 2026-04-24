@@ -87,7 +87,7 @@ export default function VerticalPromotionsCarousel({
           onMouseLeave={() => setIsHovered(false)}
         >
           {/* Main Promotion Display */}
-          <div className="relative overflow-hidden rounded-2xl shadow-xl h-96 md:h-80">
+          <div className="relative overflow-hidden rounded-2xl shadow-xl h-[32rem] sm:h-[30rem] md:h-80">
             {promotions.map((promo, index) => (
               <div
                 key={promo.id}
@@ -115,7 +115,7 @@ export default function VerticalPromotionsCarousel({
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 p-8 md:p-12 text-white h-full flex items-center">
+                <div className="relative z-10 p-6 sm:p-8 md:p-12 text-white h-full flex items-start md:items-center overflow-y-auto">
                   <div className="w-full">
                     {/* Type Badge */}
                     <div className="flex items-center gap-2 mb-4">
