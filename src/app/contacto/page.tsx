@@ -53,7 +53,8 @@ export default function ContactoPage() {
                   <a href="tel:+529999951776" className="text-gray-600 hover:underline">
                     +52 999 995 1776
                   </a>
-                  <p className="text-sm text-gray-500">Canek • L-V: 8:30 AM - 6:30 PM</p>
+                  <p className="text-sm text-gray-500">Canek • L-V: 8:30 AM - 6:00 PM</p>
+                  <p className="text-sm text-gray-500">Sáb: 9:00 AM - 3:00 PM</p>
                 </div>
               </div>
 
@@ -142,11 +143,11 @@ export default function ContactoPage() {
                 </li>
                 <li className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
-                  <span className="text-gray-700">Mezcla de colores personalizada</span>
+                  <span className="text-gray-700">Igualación de colores personalizada</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
-                  <span className="text-gray-700">Entrega a domicilio</span>
+                  <span className="text-gray-700">Entrega a domicilio en Mérida</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
@@ -318,16 +319,16 @@ export default function ContactoPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">¿Tienen servicio de mezcla de colores?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">¿Tienen servicio de igualación de colores?</h3>
               <p className="text-gray-600 text-sm mb-4">
-                Sí, en nuestras tiendas físicas de Mérida ofrecemos servicio de mezcla 
-                de colores personalizada para lograr el tono exacto que necesitas.
+                Sí, en nuestras tiendas físicas de Mérida ofrecemos servicio de igualación 
+                de colores personalizada para lograr el tono exacto que necesitas. Contamos con más de 1500 colores.
               </p>
 
               <h3 className="font-semibold text-gray-900 mb-2">¿Cuáles son los horarios de atención?</h3>
               <p className="text-gray-600 text-sm">
-                Lunes a Viernes: 8:00 AM - 7:00 PM<br />
-                Sábados: 8:00 AM - 6:00 PM<br />
+                Lunes a Viernes: 8:30 AM - 6:00 PM<br />
+                Sábados: 9:00 AM - 3:00 PM<br />
                 Domingos: Varía por tienda
               </p>
             </div>

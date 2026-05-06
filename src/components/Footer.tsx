@@ -131,16 +131,17 @@ export default function Footer() {
               </div>
               
               <div className="flex items-center space-x-3">
-                <Phone size={18} className="text-primary-400 flex-shrink-0" />
                 <div>
+                  <h4 className="font-semibold text-white mb-1">Teléfono</h4>
                   <a href="tel:+529999951776" className="text-gray-300 hover:text-white transition-colors">
                     +52 999 995 1776
                   </a>
-                  <p className="text-sm text-gray-400">Lun - Vie: 8:30 - 18:30</p>
+                  <p className="text-sm text-gray-400">Lun - Vie: 8:30 - 18:00</p>
+                  <p className="text-sm text-gray-400">Sáb: 9:00 - 15:00</p>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-3">
+              <div className="flex items-start space-x-3">
                 <Mail size={18} className="text-primary-400 flex-shrink-0" />
                 <div>
                   <a href="mailto:operaciones@nup.com.mx" className="text-gray-300 hover:text-white transition-colors">

@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useToast } from '@/contexts/ToastContext'
-import AdminProtection from '@/components/AdminProtection'
-import AdminHeader from '@/components/AdminHeader'
+import AdminLayout from '@/components/AdminLayout'
 import { Plus, Edit, Trash2, Eye, EyeOff, ArrowUp, ArrowDown, Calendar, Tag } from 'lucide-react'
 
 interface Promotion {
@@ -132,23 +131,17 @@ export default function PromotionsAdmin() {
 
   if (loading) {
     return (
-      <AdminProtection>
-        <div className="min-h-screen bg-gray-50">
-          <AdminHeader />
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-          </div>
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
-      </AdminProtection>
+      </AdminLayout>
     )
   }
 
   return (
-    <AdminProtection>
-      <div className="min-h-screen bg-gray-50">
-        <AdminHeader />
-        
-        <div className="container mx-auto px-4 py-8">
+    <AdminLayout>
+      <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -380,8 +373,7 @@ export default function PromotionsAdmin() {
               </div>
             )}
           </div>
-        </div>
       </div>
-    </AdminProtection>
+    </AdminLayout>
   )
 }

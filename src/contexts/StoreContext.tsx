@@ -74,12 +74,12 @@ const meridaStores: PhysicalStore[] = [
     whatsapp: '5219994950415',
     email: 'dorada@pinturasacuario.com',
     hours: {
-      weekdays: '8:30 AM - 6:30 PM',
+      weekdays: '8:30 AM - 6:00 PM',
       saturday: '9:00 AM - 3:00 PM',
       sunday: 'Cerrado'
     },
     manager: 'Luis García',
-    services: ['Venta', 'Asesoría técnica', 'Mezcla de colores', 'Entrega a domicilio'],
+    services: ['Venta', 'Asesoría técnica', 'Igualación de colores', 'Entrega a domicilio'],
     zone: 'norte'
   },
   {
@@ -95,7 +95,7 @@ const meridaStores: PhysicalStore[] = [
     telegram: 'pinturasacuario_canek',
     email: 'canek@pinturasacuario.com',
     hours: {
-       weekdays: '8:30 AM - 6:30 PM',
+      weekdays: '8:30 AM - 6:00 PM',
       saturday: '9:00 AM - 3:00 PM',
       sunday: 'Cerrado'
     },
@@ -115,12 +115,12 @@ const meridaStores: PhysicalStore[] = [
     telegram: 'pinturasacuario_caucel',
     email: 'caucel@pinturasacuario.com',
     hours: {
-      weekdays: '8:30 AM - 6:30 PM',
+      weekdays: '8:30 AM - 6:00 PM',
       saturday: '9:00 AM - 3:00 PM',
       sunday: 'Cerrado'
     },
     manager: 'Roberto Vázquez',
-    services: ['Venta', 'Asesoría técnica', 'Mezcla de colores', 'Productos industriales'],
+    services: ['Venta', 'Asesoría técnica', 'Igualación de colores', 'Productos industriales'],
     zone: 'sur'
   },
   {
@@ -135,7 +135,7 @@ const meridaStores: PhysicalStore[] = [
     telegram: 'pinturasacuario_circuitosur',
     email: 'circuitosur@pinturasacuario.com',
     hours: {
-      weekdays: '8:30 AM - 6:30 PM',
+      weekdays: '8:30 AM - 6:00 PM',
       saturday: '9:00 AM - 3:00 PM',
       sunday: 'Cerrado'
     },

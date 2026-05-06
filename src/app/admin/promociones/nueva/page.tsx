@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import AdminLayout from '@/components/AdminLayout'
 import { useToast } from '@/contexts/ToastContext'
 import { ArrowLeft, Save, X } from 'lucide-react'
+import ImageUpload from '@/components/admin/ImageUpload'
 
 type PromotionType = 'discount' | 'bundle' | 'seasonal' | 'flash'
 
@@ -225,16 +226,21 @@ export default function NuevaPromocion() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">URL de Imagen *</label>
-                <input
-                  type="text"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
-                    errors.image ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="https://..."
+                <ImageUpload
+                  currentImage={formData.image}
+                  onImageChange={(imageUrl) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      image: imageUrl
+                    }))
+
+                    if (errors.image) {
+                      setErrors((prev) => ({
+                        ...prev,
+                        image: ''
+                      }))
+                    }
+                  }}
                 />
                 {errors.image && <p className="mt-1 text-sm text-red-600">{errors.image}</p>}
               </div>
