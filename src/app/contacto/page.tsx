@@ -321,8 +321,8 @@ export default function ContactoPage() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">¿Tienen servicio de igualación de colores?</h3>
               <p className="text-gray-600 text-sm mb-4">
-                Sí, en nuestras tiendas físicas de Mérida ofrecemos servicio de igualación 
-                de colores personalizada para lograr el tono exacto que necesitas. Contamos con más de 1500 colores.
+                Sí, en nuestras tiendas físicas de Mérida contamos con los 1500 colores de Pinturas Acuario  
+                pertenecientes a Polycrom.
               </p>
 
               <h3 className="font-semibold text-gray-900 mb-2">¿Cuáles son los horarios de atención?</h3>
