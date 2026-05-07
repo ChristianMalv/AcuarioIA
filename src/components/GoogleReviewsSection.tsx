@@ -43,11 +43,7 @@ export default function GoogleReviewsSection({ minStars = 4 }: { minStars?: numb
     <div className="bg-white">
       <div className="container mx-auto px-4 pt-10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Reseñas en Google</h2>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 md:ml-auto">
             {stores.map((s) => {
               const active = s.id === selectedId
               return (
