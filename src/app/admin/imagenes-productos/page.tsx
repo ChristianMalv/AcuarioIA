@@ -26,21 +26,31 @@ export default function ImagenesProductosPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [product, setProduct] = useState<Product | null>(null)
+  const [matches, setMatches] = useState<Array<Pick<Product, 'id' | 'sku' | 'name'>>>([])
 
-  const normalizedSku = useMemo(() => sku.trim().toUpperCase(), [sku])
+  const normalizedSku = useMemo(() => sku.trim(), [sku])
 
   const fetchProduct = async () => {
     if (!normalizedSku) {
-      setError('Escribe un SKU')
+      setError('Escribe un SKU o nombre')
       return
     }
 
     setLoading(true)
     setError('')
+    setMatches([])
 
     try {
-      const res = await fetch(`/api/admin/product-images?sku=${encodeURIComponent(normalizedSku)}`)
-      const data = await res.json()
+      const res = await fetch(`/api/admin/product-images?q=${encodeURIComponent(normalizedSku)}`)
+      const data = await res.json().catch(() => null)
+
+      if (res.status === 409 && data?.matches?.length) {
+        setProduct(null)
+        setMatches(data.matches)
+        setError(data?.error || 'Se encontraron varios productos, elige uno')
+        return
+      }
+
       if (!res.ok) {
         setProduct(null)
         setError(data?.error || 'No se pudo cargar el producto')
@@ -50,6 +60,31 @@ export default function ImagenesProductosPage() {
       setProduct(data.product)
     } catch {
       setProduct(null)
+      setError('No se pudo cargar el producto')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const selectMatch = async (match: Pick<Product, 'id' | 'sku' | 'name'>) => {
+    if (!match.sku) return
+
+    setSku(match.sku)
+    setMatches([])
+    setError('')
+    setProduct(null)
+
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/admin/product-images?sku=${encodeURIComponent(match.sku)}`)
+      const data = await res.json().catch(() => null)
+      if (!res.ok) {
+        setError(data?.error || 'No se pudo cargar el producto')
+        return
+      }
+
+      setProduct(data.product)
+    } catch {
       setError('No se pudo cargar el producto')
     } finally {
       setLoading(false)
@@ -141,20 +176,20 @@ export default function ImagenesProductosPage() {
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
           <h1 className="text-3xl font-bold text-gray-900">Imágenes de productos</h1>
           <p className="text-gray-600 mt-2">
-            Busca por SKU y sube imágenes. Esto no se borra con el import de inventario.
+            Busca por SKU o nombre y sube imágenes. Esto no se borra con el import de inventario.
           </p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 space-y-4">
           <div className="flex gap-3 items-end">
             <div className="flex-1">
-              <label htmlFor="sku" className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+              <label htmlFor="sku" className="block text-sm font-medium text-gray-700 mb-1">SKU o nombre</label>
               <input
                 id="sku"
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                placeholder="Ej. EW30010"
+                placeholder="Ej. EW30010 o Esmalte"
               />
             </div>
 
@@ -170,6 +205,25 @@ export default function ImagenesProductosPage() {
 
           {error ? (
             <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-700 text-sm">{error}</div>
+          ) : null}
+
+          {matches.length ? (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 space-y-2">
+              <div className="text-sm font-medium text-amber-900">Resultados</div>
+              <div className="space-y-2">
+                {matches.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => selectMatch(m)}
+                    className="w-full text-left px-3 py-2 rounded border border-amber-200 bg-white hover:bg-amber-100"
+                  >
+                    <div className="text-sm text-gray-900 font-medium">{m.name}</div>
+                    <div className="text-xs text-gray-600">SKU: {m.sku ?? '-'}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
           ) : null}
         </div>
 
