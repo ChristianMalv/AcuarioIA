@@ -29,7 +29,7 @@ type GooglePlaceDetailsResponse = {
   }
 }
 
-const MONTH_SECONDS = 60 * 60 * 24 * 30
+const WEEK_SECONDS = 60 * 60 * 24 * 7
 
 type TranslateResponse = {
   data?: {
@@ -46,7 +46,7 @@ async function translateTextsToSpanish(apiKey: string, texts: string[]): Promise
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ q: texts, target: 'es', format: 'text' }),
-    next: { revalidate: MONTH_SECONDS },
+    next: { revalidate: WEEK_SECONDS },
   })
   if (!res.ok) return null
   const data = (await res.json()) as TranslateResponse
@@ -66,7 +66,7 @@ async function resolvePlaceIdFromText(
   url.searchParams.set('language', 'es')
   url.searchParams.set('key', apiKey)
 
-  const res = await fetch(url.toString(), { next: { revalidate: MONTH_SECONDS } })
+  const res = await fetch(url.toString(), { next: { revalidate: WEEK_SECONDS } })
   if (!res.ok) return { placeId: null, status: `HTTP_${res.status}` }
   const data = (await res.json()) as FindPlaceFromTextResponse
   if (data.status !== 'OK') {
@@ -137,7 +137,7 @@ export async function GET(request: Request) {
   url.searchParams.set('language', 'es')
   url.searchParams.set('key', apiKey)
 
-  const res = await fetch(url.toString(), { next: { revalidate: MONTH_SECONDS } })
+  const res = await fetch(url.toString(), { next: { revalidate: WEEK_SECONDS } })
   if (!res.ok) {
     return NextResponse.json({ error: 'Failed to fetch Google reviews' }, { status: 502 })
   }
@@ -190,7 +190,7 @@ export async function GET(request: Request) {
     },
     {
       headers: {
-        'Cache-Control': `public, s-maxage=${MONTH_SECONDS}, stale-while-revalidate=86400`,
+        'Cache-Control': `public, s-maxage=${WEEK_SECONDS}, stale-while-revalidate=86400`,
       },
     }
   )
