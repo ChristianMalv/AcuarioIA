@@ -125,6 +125,9 @@ export default function Header() {
             <Link href="/impermeabilizantes" className="text-gray-700 hover:text-primary-600 font-medium">
               Impermeabilizantes
             </Link>
+            <Link href="/ninos" className="text-gray-700 hover:text-primary-600 font-medium">
+              Niños
+            </Link>
             <Link href="/contacto" className="text-gray-700 hover:text-primary-600 font-medium">
               Contacto
             </Link>
@@ -175,6 +178,9 @@ export default function Header() {
               </Link>
               <Link href="/impermeabilizantes" className="text-gray-700 hover:text-primary-600 font-medium">
                 Impermeabilizantes
+              </Link>
+              <Link href="/ninos" className="text-gray-700 hover:text-primary-600 font-medium">
+                Niños
               </Link>
               <Link href="/contacto" className="text-gray-700 hover:text-primary-600 font-medium">
                 Contacto

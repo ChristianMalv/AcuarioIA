@@ -55,7 +55,10 @@ async function translateTextsToSpanish(apiKey: string, texts: string[]): Promise
   return translations.map((t) => t.translatedText ?? '')
 }
 
-async function resolvePlaceIdFromText(apiKey: string, input: string): Promise<string | null> {
+async function resolvePlaceIdFromText(
+  apiKey: string,
+  input: string
+): Promise<{ placeId: string | null; status?: string; errorMessage?: string }> {
   const url = new URL('https://maps.googleapis.com/maps/api/place/findplacefromtext/json')
   url.searchParams.set('input', input)
   url.searchParams.set('inputtype', 'textquery')
@@ -64,11 +67,13 @@ async function resolvePlaceIdFromText(apiKey: string, input: string): Promise<st
   url.searchParams.set('key', apiKey)
 
   const res = await fetch(url.toString(), { next: { revalidate: MONTH_SECONDS } })
-  if (!res.ok) return null
+  if (!res.ok) return { placeId: null, status: `HTTP_${res.status}` }
   const data = (await res.json()) as FindPlaceFromTextResponse
-  if (data.status !== 'OK') return null
+  if (data.status !== 'OK') {
+    return { placeId: null, status: data.status, errorMessage: data.error_message }
+  }
   const placeId = data.candidates?.[0]?.place_id
-  return placeId ?? null
+  return { placeId: placeId ?? null }
 }
 
 export async function GET(request: Request) {
@@ -111,15 +116,19 @@ export async function GET(request: Request) {
       )
     }
 
-    placeId = await resolvePlaceIdFromText(apiKey, queryToResolve)
-    if (!placeId) {
+    const resolved = await resolvePlaceIdFromText(apiKey, queryToResolve)
+    if (!resolved.placeId) {
       return NextResponse.json(
         {
           error: 'Unable to resolve place_id from GOOGLE_PLACE_QUERY',
+          status: resolved.status,
+          message: resolved.errorMessage,
+          query: queryToResolve,
         },
         { status: 502 }
       )
     }
+    placeId = resolved.placeId
   }
 
   const url = new URL('https://maps.googleapis.com/maps/api/place/details/json')
