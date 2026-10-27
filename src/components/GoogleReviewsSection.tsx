@@ -6,7 +6,7 @@ import GoogleReviews from '@/components/GoogleReviews'
 type StoreOption = {
   id: string
   label: string
-  query: string
+  placeId: string
 }
 
 export default function GoogleReviewsSection({ minStars = 4 }: { minStars?: number }) {
@@ -15,22 +15,22 @@ export default function GoogleReviewsSection({ minStars = 4 }: { minStars?: numb
       {
         id: 'canek',
         label: 'Canek',
-        query: 'Pinturas Acuario Canek Mérida Yucatán',
+        placeId: 'ChIJ14xHXUdzVo8R-U16yzY60jA',
       },
       {
         id: 'caucel',
         label: 'Caucel',
-        query: 'Pinturas Acuario Caucel Mérida Yucatán',
+        placeId: 'ChIJqYQvVAALVo8Rg8SUvf1flKQ',
       },
       {
         id: 'circuito-sur',
         label: 'Circuito Sur',
-        query: 'Pinturas Acuario Circuito Sur Mérida Yucatán',
+        placeId: 'ChIJ9dXn-j1xVo8RbvQsvjd4qX4',
       },
       {
         id: 'dorada',
         label: 'Dorada',
-        query: 'Pinturas Acuario Dorada Mérida Yucatán',
+        placeId: 'ChIJAQWmuLx1Vo8Rf3iy4NF3qRA',
       },
     ],
     []
@@ -63,7 +63,7 @@ export default function GoogleReviewsSection({ minStars = 4 }: { minStars?: numb
         </div>
       </div>
 
-      <GoogleReviews minStars={minStars} query={selected?.query} />
+      <GoogleReviews minStars={minStars} placeId={selected?.placeId} />
     </div>
   )
 }

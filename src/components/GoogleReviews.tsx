@@ -37,10 +37,12 @@ export default function GoogleReviews({
   minStars = 4,
   limit = 6,
   query,
+  placeId,
 }: {
   minStars?: number
   limit?: number
   query?: string
+  placeId?: string
 }) {
   const [data, setData] = useState<GoogleReviewsResponse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -51,7 +53,11 @@ export default function GoogleReviews({
       try {
         setLoading(true)
         setLoadError('')
-        const url = query ? `/api/google-reviews?query=${encodeURIComponent(query)}` : '/api/google-reviews'
+        const url = placeId
+          ? `/api/google-reviews?placeId=${encodeURIComponent(placeId)}`
+          : query
+            ? `/api/google-reviews?query=${encodeURIComponent(query)}`
+            : '/api/google-reviews'
         const res = await fetch(url)
         const json = await res.json().catch(() => null)
 
@@ -69,7 +75,7 @@ export default function GoogleReviews({
     }
 
     load()
-  }, [query])
+  }, [query, placeId])
 
   const filtered = useMemo(() => {
     const reviews = data?.reviews ?? []
